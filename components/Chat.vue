@@ -105,9 +105,9 @@
                 questionId: null, // current question Id
                 endButtonText: 'End chat? Yes', // end chat
                 backButtonText: 'Back', // back to prev bot question
-                backMainButtonText: 'Back to MainMenu', // back to first bot question
+                backMainButtonText: 'Back to Main-Menu', // back to first bot question
                 isLoaded: false,
-                serverAddress: 'http://bstar.justmy.com/api/chatbot/'
+                serverAddress: 'http://localhost:8000/api/chatbot/'
             }
         },
         created(){
@@ -201,7 +201,7 @@
                 this.messageList = [ ...this.messageList, message ]
 
                 let self = this
-                
+                console.log(message.data.text.toLowerCase(), "===", this.backMainButtonText.toLowerCase())
                 if(message.data.text.toLowerCase() == this.backButtonText.toLowerCase()) // back
                 {
                     this.sendMessage(this.botMessages.find(message => message['id'] == this.prevQuestionId))

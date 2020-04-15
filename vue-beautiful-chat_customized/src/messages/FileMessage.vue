@@ -43,15 +43,13 @@ export default {
 
 .sc-message--file-icon {
   text-align: center;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 15px;
-  margin-bottom: 0px;
+  margin: 0;
 }
 
 .sc-image {
-  max-width: 100%;
-  min-width: 100%;
+  width: 100%;
+  border-top-left-radius: 6px;  
+  border-top-right-radius: 6px;  
 }
 
 .sc-message--file-text {
@@ -69,7 +67,7 @@ export default {
   padding-left: 15px;
   padding-right: 15px;
   padding-top: 0;
-  font-size: x-small;
+  font-size: 12px;
   text-align: center;
 }
 
