@@ -2,7 +2,7 @@
   <div class='sc-message--video' :style="messageColors">
     <div v-for="(video, video_index) in data.options" :key="video_index">
       <div class='sc-message--video-content'>
-        <iframe :src="video.url" frameborder="0" allowfullscreen width="100%" height="250px"></iframe>
+        <iframe :src="video.url" frameborder="0" allowfullscreen></iframe>
       </div>
       <div class='sc-message--video-name' :style="messageColors">
         <a :href="video.url ? video.url : '#'" target='_blank'>{{video.name || ''}}</a>
@@ -29,13 +29,19 @@ export default {
 
 <style scoped lang="scss">
 .sc-message--video {
-  width: 100%;
   border-radius: 6px;
   font-weight: 300;
   font-size: 14px;
   line-height: 1.4;
   /* white-space: pre-wrap; */
-  -webkit-font-smoothing: subpixel-antialiased
+  -webkit-font-smoothing: subpixel-antialiased;
+
+  width: calc(100% + 80px);
+  margin: 0 -40px;
+  @media (max-width: 450px) {
+    width: calc(100% + 30px);
+    margin: 0 -15px;
+  }
 }
 
 .sc-message--content.sent .sc-message--video {
@@ -48,6 +54,11 @@ export default {
   iframe {
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
+    width: 100%;
+    height: 250px;
+    @media (max-width: 450px) {
+      height: 195px;
+    }
   }
 }
 

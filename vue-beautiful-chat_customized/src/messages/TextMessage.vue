@@ -87,8 +87,8 @@ export default {
 }
 </script>
 
-<style scoped>
-a.chatLink {
-  color: inherit !important;
-}
+<style scoped lang="scss">
+  a.chatLink {
+    color: inherit !important;
+  }
 </style>

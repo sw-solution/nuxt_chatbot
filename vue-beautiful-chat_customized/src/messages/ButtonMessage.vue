@@ -46,35 +46,35 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.sc-message--button-text {
-  padding: 8px 20px;
-  margin-bottom: 15px;
-  border-radius: 6px;
-  font-weight: 300;
-  font-size: 14px;
-  line-height: 1.4;
-  white-space: pre-wrap;
-  -webkit-font-smoothing: subpixel-antialiased;
-  display: inline-block;
-}
-
-.sc-message--button-options{
-  padding: 0;
-  text-align: center;
-}
-
-.sc-message--button-options button{
-  padding: 5px 15px;
-  margin: 5px;
-  color: rgb(34, 34, 34);
-  border: solid 1px rgb(78, 140, 255);
-  background-color: transparent;
-  border-radius: 6px;
-  outline: none !important;
-  &:active, &.active {
-    border: solid 1px transparent;
-    background-color: rgb(78, 140, 255);
-    color: #fff;
+  .sc-message--button-text {
+    padding: 8px 20px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 1.4;
+    white-space: pre-wrap;
+    -webkit-font-smoothing: subpixel-antialiased;
+    display: inline-block;
   }
-}
+
+  .sc-message--button-options{
+    padding: 0;
+    text-align: center;
+  }
+
+  .sc-message--button-options button{
+    padding: 5px 15px;
+    margin: 5px;
+    color: rgb(34, 34, 34);
+    border: solid 1px rgb(78, 140, 255);
+    background-color: transparent;
+    border-radius: 6px;
+    outline: none !important;
+    &:active, &.active {
+      border: solid 1px transparent;
+      background-color: rgb(78, 140, 255);
+      color: #fff;
+    }
+  }
 </style>

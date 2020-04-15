@@ -118,7 +118,10 @@ export default {
 </script>
 <style lang="scss">
 .sc-message {
-  width: 80%;
+  width: calc(100% - 80px);
+  @media (max-width: 450px) {
+    width: calc(100% - 30px);
+  }
   margin: auto;
   padding-bottom:15px;
   display: flex;
@@ -127,9 +130,6 @@ export default {
     word-wrap: normal;
     font-size: xx-small;
     text-align: center;
-  }
-  @media(max-width: 500px){
-    width: 90%;
   }
 }
 
