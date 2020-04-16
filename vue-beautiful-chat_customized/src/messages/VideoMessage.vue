@@ -8,7 +8,7 @@
         <a :href="video.url ? video.url : '#'" target='_blank'>{{video.name || ''}}</a>
       </div>
     </div>
-    <div class="sc-message--video-text" :style="messageColors">{{data.text}}<p v-if="data.meta" class='sc-message--meta' :style="messageColors">{{data.meta}}</p></div>
+    <div :class="{'sc-message--video-text': data.text}" :style="messageColors">{{data.text}}<p v-if="data.meta" class='sc-message--meta' :style="messageColors">{{data.meta}}</p></div>
   </div>
 </template>
 
@@ -77,6 +77,7 @@ export default {
   padding-left: 15px;
   padding-right: 15px;
   padding-top: 0;
+  margin-bottom: 15px;
   font-size: 12px;
   text-align: center;
 }

@@ -21,6 +21,97 @@
       @btnClicked="btnClicked"
       @onType="handleOnType"
       @edit="editMessage" />
+
+    <div class="closed-form" v-if="!isChatOpen && isDesktop">
+      <v-form v-model="formData.valid">
+        <v-container>
+
+            <v-row>
+                <v-col
+                cols="12"
+                class="d-flex justify-center"
+                >
+                    <v-avatar
+                    size="136">
+                        <img
+                            src="https://cdn.vuetifyjs.com/images/john.jpg"
+                            alt="John"
+                        >
+
+                    </v-avatar>
+                </v-col>
+
+                <v-col
+                cols="12"
+                class="text-center pt-0"
+                >
+                    <h2>Marian worm</h2>
+                    <p class="mb-1">founder</p>
+                    <p class="mb-0"><a class="text--primary" href="tel:+49 531 213605500">+49 531 213605500</a></p>
+                </v-col>
+
+                <v-col
+                cols="12"
+                >
+                    <v-text-field
+                        v-model="formData.fullname"
+                        label="Full name"
+                        outlined
+                        shaped
+                        dense
+                        hide-details="auto"
+                    ></v-text-field>
+                </v-col>
+                
+                <v-col
+                cols="12"
+                >
+                    <v-text-field
+                        v-model="formData.phone"
+                        label="Phone number"
+                        outlined
+                        shaped
+                        dense
+                        hide-details="auto"
+                    ></v-text-field>
+                </v-col>
+                
+                <v-col
+                cols="12"
+                >
+                    <v-text-field
+                        v-model="formData.email"
+                        label="Email address"
+                        outlined
+                        shaped
+                        dense
+                        hide-details="auto"
+                    ></v-text-field>
+                </v-col>
+
+                <v-col
+                cols="12"
+                >
+                    <v-text-field
+                        v-model="formData.website"
+                        label="Website"
+                        outlined
+                        shaped
+                        dense
+                        hide-details="auto"
+                    ></v-text-field>
+                </v-col>
+
+                <v-col
+                cols="12"
+                >
+                    <v-btn class="my-2" block large depressed color="warning">Arrange an appointment</v-btn>
+                    <v-btn class="my-2" block large depressed color="warning" @click="openChat">Open chatbot</v-btn>
+                </v-col>
+            </v-row>
+        </v-container>
+        </v-form>
+    </div>
   </div>
 </template>
 
@@ -30,11 +121,16 @@
     import FileIcon from 'vue-beautiful-chat/src/assets/file.svg'
     import CloseIconSvg from 'vue-beautiful-chat/src/assets/close.svg'
 
-    // import {botMessages} from '~/store/dummymessages'
-
     export default {
         data() {
             return {
+                formData: {
+                    valid: false,
+                    fullname: '',
+                    phone: '',
+                    email: '',
+                    website: '',
+                },
                 icons:{
                     call: {
                         img: 'https://img.icons8.com/office/40/000000/phone.png',
@@ -107,6 +203,7 @@
                 backButtonText: 'Back', // back to prev bot question
                 backMainButtonText: 'Back to Main-Menu', // back to first bot question
                 isLoaded: false,
+                isDesktop: false,
                 serverAddress: 'http://localhost:8000/api/chatbot/'
             }
         },
@@ -124,6 +221,8 @@
             })
         },
         mounted(){
+            if(window.screen.width > 760)
+                this.isDesktop = true
         },
         watch:{
             questionId:function(newVal, oldVal){
@@ -201,11 +300,11 @@
                 this.messageList = [ ...this.messageList, message ]
 
                 let self = this
-                console.log(message.data.text.toLowerCase(), "===", this.backMainButtonText.toLowerCase())
                 if(message.data.text.toLowerCase() == this.backButtonText.toLowerCase()) // back
                 {
-                    this.sendMessage(this.botMessages.find(message => message['id'] == this.prevQuestionId))
+                    this.messageList.splice(this.messageList.length-3, 3)
                 } else if(message.data.text.toLowerCase() == this.backMainButtonText.toLowerCase())  {// back to main menu
+                    this.messageList = []
                     this.sendMessage(this.botMessages[0])
                 } else {
                     let next_id = this.botMessages.find(message => message['id'] == self.questionId)['next_id']
@@ -241,10 +340,11 @@
 
 <style lang="scss">
     .sc-chat-window, .sc-launcher{
-        z-index: 99999;
+        display: none;
     }
 
     .sc-chat-window{
+        bottom: 30px !important;
         height: 715px !important;
         width: 500px !important;
         padding: 200px 5px 5px 5px !important;
@@ -265,5 +365,15 @@
     .sc-message--text-content{
         margin: 0 !important;
         padding: 0 !important;
+    }
+
+    .closed-form {
+        background: #4FC3F7 ;
+        position: fixed;
+        bottom: 30px;
+        right: 25px;
+        width: 350px !important;
+        border: solid 2px #fff;
+        border-radius: 10px;
     }
 </style>

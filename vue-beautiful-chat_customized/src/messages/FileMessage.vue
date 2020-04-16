@@ -8,7 +8,7 @@
         <a :href="file.url ? file.url : '#'" target='_blank'>{{file.name || ''}}</a>
       </div>
     </div>
-    <div class="sc-message--file-text" :style="messageColors">{{data.text}}<p v-if="data.meta" class='sc-message--meta' :style="messageColors">{{data.meta}}</p></div>
+    <div :class="{'sc-message--file-text': data.text}" :style="messageColors">{{data.text}}<p v-if="data.meta" class='sc-message--meta' :style="messageColors">{{data.meta}}</p></div>
   </div>
 </template>
 
@@ -67,6 +67,7 @@ export default {
   padding-left: 15px;
   padding-right: 15px;
   padding-top: 0;
+  margin-bottom: 15px;
   font-size: 12px;
   text-align: center;
 }
