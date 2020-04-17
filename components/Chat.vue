@@ -22,8 +22,8 @@
       @onType="handleOnType"
       @edit="editMessage" />
 
-    <div class="closed-form" v-if="!isChatOpen && isDesktop">
-      <v-form v-model="formData.valid">
+    <div class="closed-form" v-if="!isChatOpen && isDesktop && isLoaded">
+      <v-form ref="frm_appointment" v-model="formData.valid">
         <v-container>
 
             <v-row>
@@ -32,10 +32,11 @@
                 class="d-flex justify-center"
                 >
                     <v-avatar
+                    v-if="formData.avatar"
                     size="136">
                         <img
-                            src="https://cdn.vuetifyjs.com/images/john.jpg"
-                            alt="John"
+                            :src="formData.avatar"
+                            alt="Avatar"
                         >
 
                     </v-avatar>
@@ -45,9 +46,9 @@
                 cols="12"
                 class="text-center pt-0"
                 >
-                    <h2>Marian worm</h2>
-                    <p class="mb-1">founder</p>
-                    <p class="mb-0"><a class="text--primary" href="tel:+49 531 213605500">+49 531 213605500</a></p>
+                    <h2 v-if="formData.admin_name">{{ formData.admin_name }}</h2>
+                    <p class="mb-1" v-if="formData.admin_type">{{ formData.admin_type }}</p>
+                    <p class="mb-0" v-if="formData.admin_phone"><a class="text--primary" :href="'tel:' + formData.admin_phone">{{formData.admin_phone}}</a></p>
                 </v-col>
 
                 <v-col
@@ -57,55 +58,79 @@
                         v-model="formData.fullname"
                         label="Full name"
                         outlined
-                        shaped
                         dense
                         hide-details="auto"
+                        background-color="#fff"
+                        :rules="formData.nameRules"
+                        required
                     ></v-text-field>
                 </v-col>
                 
                 <v-col
                 cols="12"
+                class="pt-0"
                 >
                     <v-text-field
                         v-model="formData.phone"
                         label="Phone number"
                         outlined
-                        shaped
                         dense
                         hide-details="auto"
+                        background-color="#fff"
+                        :rules="[v => !!v || 'This field is required']"
+                        required
                     ></v-text-field>
                 </v-col>
                 
                 <v-col
                 cols="12"
+                class="pt-0"
                 >
                     <v-text-field
                         v-model="formData.email"
                         label="Email address"
                         outlined
-                        shaped
                         dense
                         hide-details="auto"
+                        background-color="#fff"
+                        :rules="formData.emailRules"
+                        required
                     ></v-text-field>
                 </v-col>
 
                 <v-col
                 cols="12"
+                class="pt-0"
                 >
                     <v-text-field
                         v-model="formData.website"
                         label="Website"
                         outlined
-                        shaped
                         dense
                         hide-details="auto"
+                        background-color="#fff"
                     ></v-text-field>
+                </v-col>
+
+                <v-col cols="12" class="pt-0">
+                        <v-textarea
+                        v-model="formData.message"
+                        label="Message"
+                        auto-grow
+                        outlined
+                        rows="3"
+                        row-height="25"
+                        hide-details="auto"
+                        background-color="#fff"
+                        :rules="[v => !!v || 'This field is required']"
+                        required
+                        ></v-textarea>
                 </v-col>
 
                 <v-col
                 cols="12"
                 >
-                    <v-btn class="my-2" block large depressed color="warning">Arrange an appointment</v-btn>
+                    <v-btn class="my-2" block large depressed color="warning" @click="sendAppointment">Arrange an appointment</v-btn>
                     <v-btn class="my-2" block large depressed color="warning" @click="openChat">Open chatbot</v-btn>
                 </v-col>
             </v-row>
@@ -130,6 +155,20 @@
                     phone: '',
                     email: '',
                     website: '',
+                    message: '',
+                    avatar: '',
+                    admin_name: '',
+                    admin_type: '',
+                    admin_phone: '',
+                    bgcolor: '',
+                    nameRules: [
+                        v => !!v || 'This field is required',
+                        v => (v && v.length <= 10) || 'Name must be less than 10 characters',
+                    ],
+                    emailRules: [
+                        v => !!v || 'This field is required',
+                        v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+                    ],
                 },
                 icons:{
                     call: {
@@ -197,7 +236,6 @@
                 messageStyling: false, // enables *bold* /emph/ _underline_ and such (more info at github.com/mattezza/msgdown)
                 backgroundImageUrl: '',
                 titleImageUrl: '',
-                prevQuestionId: '', // prev question Id
                 questionId: null, // current question Id
                 endButtonText: 'End chat? Yes', // end chat
                 backButtonText: 'Back', // back to prev bot question
@@ -213,6 +251,12 @@
 
                 this.backgroundImageUrl = data['setting']['background_image']
                 this.titleImageUrl = data['setting']['header_image']
+                this.formData.avatar = data['setting']['avatar']
+                this.formData.admin_name = data['setting']['name']
+                this.formData.admin_type = data['setting']['admin_type']
+                this.formData.admin_phone = data['setting']['phone']
+                this.formData.bgcolor = data['setting']['form_bgcolor']
+
                 this.botMessages = data['messages']
                 this.questionId = this.botMessages[0]['id']
                 this.sendMessage(this.botMessages.find(message => message['id']==this.questionId))
@@ -224,12 +268,22 @@
             if(window.screen.width > 760)
                 this.isDesktop = true
         },
-        watch:{
-            questionId:function(newVal, oldVal){
-                this.prevQuestionId = oldVal
-            },
-        },
         methods: {
+            sendAppointment() {
+                this.$refs.frm_appointment.validate()
+                if(this.formData.valid) {
+                    let message = 'Name: ' + this.formData.fullname + '\n'
+                    message += 'Phone: ' + this.formData.phone + '\n'
+                    message += 'Email: ' + this.formData.email + '\n'
+                    message += 'Website: ' + this.formData.website + '\n'
+                    message += 'Message: ' + this.formData.message + '\n'
+                    this.$axios.post(this.serverAddress + 'send-message', {message: message}).then((response) => {
+                        this.$refs.frm_appointment.reset()
+                    })
+                    this.$refs.frm_appointment.reset()
+
+                }
+            },
             getMessageIndex(){
                 return this.botMessages.find(message => message['id']==this.questionId)
             },
@@ -372,7 +426,7 @@
         position: fixed;
         bottom: 30px;
         right: 25px;
-        width: 350px !important;
+        width: 300px !important;
         border: solid 2px #fff;
         border-radius: 10px;
     }

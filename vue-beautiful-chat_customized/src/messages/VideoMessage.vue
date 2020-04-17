@@ -2,7 +2,7 @@
   <div class='sc-message--video' :style="messageColors">
     <div v-for="(video, video_index) in data.options" :key="video_index">
       <div class='sc-message--video-content'>
-        <iframe :src="video.url" frameborder="0" allowfullscreen></iframe>
+        <iframe :src="video.url" frameborder="0" allowfullscreen allow="autoplay"></iframe>
       </div>
       <div class='sc-message--video-name' :style="messageColors">
         <a :href="video.url ? video.url : '#'" target='_blank'>{{video.name || ''}}</a>
