@@ -22,7 +22,7 @@
       @onType="handleOnType"
       @edit="editMessage" />
 
-    <div class="closed-form" :style="{background: formData.bgcolor}" v-if="!isChatOpen && isDesktop && isLoaded">
+    <div class="closed-form" :style="{background: formData.bgcolor}" v-if="!isChatOpen && windowWidth > 450 && isLoaded">
       <v-form ref="frm_appointment" v-model="formData.valid">
         <v-container>
 
@@ -33,7 +33,7 @@
                 >
                     <v-avatar
                     v-if="formData.avatar"
-                    size="136">
+                    :size="windowHeight > 850 ? 136 : 96">
                         <img
                             :src="formData.avatar"
                             alt="Avatar"
@@ -129,9 +129,10 @@
 
                 <v-col
                 cols="12"
+                class="py-0"
                 >
-                    <v-btn class="my-2" block large depressed color="warning" @click="sendAppointment">Arrange an appointment</v-btn>
-                    <v-btn class="my-2" block large depressed color="warning" @click="openChat">Open chatbot</v-btn>
+                    <v-btn class="my-2" block :large="windowHeight > 850 ? true : false" :small="windowHeight > 850 ? false : true" depressed color="warning" @click="sendAppointment">Arrange an appointment</v-btn>
+                    <v-btn class="my-2" block :large="windowHeight > 850 ? true : false" :small="windowHeight > 850 ? false : true" depressed color="warning" @click="openChat">Open chatbot</v-btn>
                 </v-col>
             </v-row>
         </v-container>
@@ -242,7 +243,8 @@
                 backButtonText: 'Back', // back to prev bot question
                 backMainButtonText: 'Back to Main-Menu', // back to first bot question
                 isLoaded: false,
-                isDesktop: false,
+                windowWidth: '',
+                windowHeight: '',
                 serverAddress: 'http://localhost:8000/api/chatbot/'
             }
         },
@@ -267,8 +269,8 @@
             })
         },
         mounted(){
-            if(window.screen.width > 760)
-                this.isDesktop = true
+            this.windowWidth = window.innerWidth
+            this.windowHeight = window.innerHeight
         },
         methods: {
             sendAppointment() {
@@ -404,6 +406,9 @@
         height: 715px !important;
         width: 500px !important;
         padding: 200px 5px 5px 5px !important;
+        @media (max-height: 850px){
+            height: 630px !important;
+        }
         @media (max-width: 450px){
             height: 590px !important;
             padding: 170px 5px 5px 5px !important;
