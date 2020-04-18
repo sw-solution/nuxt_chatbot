@@ -22,7 +22,7 @@
       @onType="handleOnType"
       @edit="editMessage" />
 
-    <div class="closed-form" v-if="!isChatOpen && isDesktop && isLoaded">
+    <div class="closed-form" :style="{background: formData.bgcolor}" v-if="!isChatOpen && isDesktop && isLoaded">
       <v-form ref="frm_appointment" v-model="formData.valid">
         <v-container>
 
@@ -46,9 +46,9 @@
                 cols="12"
                 class="text-center pt-0"
                 >
-                    <h2 v-if="formData.admin_name">{{ formData.admin_name }}</h2>
-                    <p class="mb-1" v-if="formData.admin_type">{{ formData.admin_type }}</p>
-                    <p class="mb-0" v-if="formData.admin_phone"><a class="text--primary" :href="'tel:' + formData.admin_phone">{{formData.admin_phone}}</a></p>
+                    <h2 v-if="formData.admin_name" :style="{color: formData.font_color}">{{ formData.admin_name }}</h2>
+                    <p class="mb-1" v-if="formData.admin_type" :style="{color: formData.font_color}">{{ formData.admin_type }}</p>
+                    <p class="mb-0" v-if="formData.admin_phone"><a :style="{color: formData.font_color}" :href="'tel:' + formData.admin_phone">{{formData.admin_phone}}</a></p>
                 </v-col>
 
                 <v-col
@@ -161,6 +161,7 @@
                     admin_type: '',
                     admin_phone: '',
                     bgcolor: '',
+                    font_color: '',
                     nameRules: [
                         v => !!v || 'This field is required',
                         v => (v && v.length <= 10) || 'Name must be less than 10 characters',
@@ -256,6 +257,7 @@
                 this.formData.admin_type = data['setting']['admin_type']
                 this.formData.admin_phone = data['setting']['phone']
                 this.formData.bgcolor = data['setting']['form_bgcolor']
+                this.formData.font_color = data['setting']['form_color']
 
                 this.botMessages = data['messages']
                 this.questionId = this.botMessages[0]['id']
