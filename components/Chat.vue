@@ -30,6 +30,7 @@
                 <v-col
                 cols="12"
                 class="d-flex justify-center"
+                :class="windowHeight < 850 ? 'pt-0': ''"
                 >
                     <v-avatar
                     v-if="formData.avatar"
@@ -53,6 +54,7 @@
 
                 <v-col
                 cols="12"
+                :class="windowHeight < 850 ? 'pt-0': ''"
                 >
                     <v-text-field
                         v-model="formData.fullname"
@@ -118,7 +120,7 @@
                         label="Message"
                         auto-grow
                         outlined
-                        rows="3"
+                        :rows="windowHeight > 850 ? 3 : 1"
                         row-height="25"
                         hide-details="auto"
                         background-color="#fff"
@@ -408,6 +410,9 @@
         padding: 200px 5px 5px 5px !important;
         @media (max-height: 850px){
             height: 630px !important;
+        }
+        @media (max-height: 700px){
+            height: 550px !important;
         }
         @media (max-width: 450px){
             height: 590px !important;
