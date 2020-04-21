@@ -262,7 +262,7 @@
                 this.formData.admin_phone = data['setting']['phone']
                 this.formData.bgcolor = data['setting']['form_bgcolor']
                 this.formData.font_color = data['setting']['form_color']
-                this.isChatOpen = data['setting']['is_open']
+                this.isChatOpen = data['setting']['is_open'] ? true : false
 
                 this.botMessages = data['messages']
                 this.questionId = this.botMessages[0]['id']
