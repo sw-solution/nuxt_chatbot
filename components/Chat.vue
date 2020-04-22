@@ -250,7 +250,9 @@
                 serverAddress: 'http://localhost:8000/api/chatbot/'
             }
         },
-        created(){
+        mounted(){
+            this.windowWidth = window.innerWidth
+            this.windowHeight = window.innerHeight
             this.$axios.get(this.serverAddress + 'get-info').then((response) => {
                 let data = response['data']
 
@@ -262,7 +264,10 @@
                 this.formData.admin_phone = data['setting']['phone']
                 this.formData.bgcolor = data['setting']['form_bgcolor']
                 this.formData.font_color = data['setting']['form_color']
-                this.isChatOpen = data['setting']['is_open'] ? true : false
+                if(this.windowWidth > 450)
+                    this.isChatOpen = data['setting']['desktop_status'] ? true : false
+                else
+                    this.isChatOpen = data['setting']['mobile_status'] ? true : false
 
                 this.botMessages = data['messages']
                 this.questionId = this.botMessages[0]['id']
@@ -270,10 +275,6 @@
 
                 this.isLoaded = true
             })
-        },
-        mounted(){
-            this.windowWidth = window.innerWidth
-            this.windowHeight = window.innerHeight
         },
         methods: {
             sendAppointment() {
