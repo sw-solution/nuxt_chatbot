@@ -247,7 +247,7 @@
                 isLoaded: false,
                 windowWidth: '',
                 windowHeight: '',
-                serverAddress: 'http://localhost:8000/api/chatbot/'
+                serverAddress: 'http://bstar.justmy.com/api/chatbot/'
             }
         },
         mounted(){
